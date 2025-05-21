@@ -14,7 +14,13 @@ import { secuenceGetFruits } from "@/helpers/cheatsFunctions/secuenceGetFruits";
 import ButtonCashOut from "@/components/especial/buttonCashOut";
 import { sendGameTrack } from "@/app/requests";
 
+import AudioApi from "@/helpers/audio/index";
+
 export default function GameMachineClient() {
+
+    const audioApi = AudioApi.getInstance('/sounds/slot-machine.mp3', true)
+
+
     const { stateRandomFruits: [randomFruits, setRandomFruits], stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
 
     const [optPage, setOptPage] = useState(initialOptPageEnum)
@@ -51,12 +57,13 @@ export default function GameMachineClient() {
         await sendGameTrack(user)
         setOptPage(old => ({ ...old, isLoading: true }))
         setRandomFruits(initialrandomFruits)
-
+        
         if (automatic) {
             setUser(old => ({ ...old, score: old.score - 1 }));
         }
-
-
+        
+        
+        audioApi?.play()
         await secuenceGetFruits(setRandomFruits)
         reviewToCheat(user.score, setRerollChance)
         setOptPage(old => ({ ...old, isLoading: false }))
