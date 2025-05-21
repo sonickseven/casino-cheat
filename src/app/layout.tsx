@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Casino Faber",
   description: "Is a cheat casino, be careful before playing here!!",
+  openGraph: {
+    images: `https://sonickseven.deno.dev/imgs/profile_1.png`,
+  },
+
 };
 
 export default function RootLayout({
