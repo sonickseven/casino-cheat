@@ -21,22 +21,39 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   uses: actions/setup-node@v4
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    #     cache: 'npm'
-    # - run: npm ci
-    # - run: npm run build --if-present
-    # - run: npm test
     - name: Install pnpm
       run: npm i -g pnpm
     
     - name: Install dependencies
       run: pnpm install
       
-    - name: Run pipeline
-      run: pnpm run pipeline
-      
     - name: Build application
       run: pnpm run build
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: ./
+        retention-days: 1
+
+  deploy:
+    name: Deploy to Vercel
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+          
+      - name: Install Vercel CLI
+        run: npm i -g vercel
+      
+      - name: Deploy to Vercel
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
