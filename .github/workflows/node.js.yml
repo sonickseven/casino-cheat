@@ -18,6 +18,8 @@ jobs:
       matrix:
         node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    # env:
+    #   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
     - uses: actions/checkout@v4
@@ -34,8 +36,7 @@ jobs:
       run: npm i -g vercel
     
     - name: Show value in variable
-      run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}"
+      run: echo "VERCEL_TOKEN=${{ vars.VERCEL_TOKEN }}"
+      # run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}"
     # - name: Deploy to Vercel
     #   run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
-    #   env:
-    #     VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
