@@ -7,11 +7,11 @@ import { Container } from "@/components/commons/containers";
 import { useEffect, useState } from "react";
 import { initialStateTypes, userAccountEnum } from "@/store/appContext/types";
 import FruitSlot from "@/components/especial/FruitSlot";
-import Link from "next/link";
 import { initialOptPageEnum } from "@/store/lists/optPage";
 import { rerollChanceEnum } from "@/helpers/cheatsFunctions/types";
-import { reviewToCheat, triggerRerollChance } from "@/helpers/cheatsFunctions/reviewCredits";
+import { isEnabledCheat, reviewToCheat } from "@/helpers/cheatsFunctions/reviewCredits";
 import { secuenceGetFruits } from "@/helpers/cheatsFunctions/secuenceGetFruits";
+import ButtonCashOut from "@/components/especial/buttonCashOut";
 
 export default function GameMachineClient() {
     const { stateRandomFruits: [randomFruits, setRandomFruits], stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
@@ -29,7 +29,7 @@ export default function GameMachineClient() {
 
         if (randomFruits[0].character === randomFruits[1].character && randomFruits[1].character === randomFruits[2].character) {
 
-            const againRoll = triggerRerollChance(rerollChance)
+            const againRoll = isEnabledCheat(rerollChance.value)
 
             if (!againRoll) {
                 setRerollChance(old => ({ ...old, again: false }))
@@ -88,7 +88,7 @@ export default function GameMachineClient() {
         <Button success disabled={optPage.isLoading ? true : false} onClick={runGame} text={optPage.isLoading ? 'Playing...' : "Play"} />
         <Button primary onClick={leaveGame} text="Leave" />
         {user.score > 10 ?
-            <Link href="/cash-out"><Button text="Cash out" /></Link>
+            <ButtonCashOut/>
             : null}
     </Container>
 }

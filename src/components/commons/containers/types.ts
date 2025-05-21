@@ -1,4 +1,5 @@
 export type ContainerTypes = {
+    style?: React.CSSProperties;
     children?: React.ReactNode;
     className?: string;
     id?: string;

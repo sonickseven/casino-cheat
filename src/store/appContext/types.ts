@@ -8,7 +8,7 @@ export const emptyFruitEnum: typeof fruits[0] = {
 
 export const userAccountEnum = {
     name: '',
-    score: 50,
+    score: 10,
     isPlaying: false
 }
 
