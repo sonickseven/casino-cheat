@@ -22,23 +22,21 @@ jobs:
     #   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
-    # - uses: actions/checkout@v4
-    # - name: Install pnpm
-    #   run: npm i -g pnpm
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      run: npm i -g pnpm
     
-    # - name: Install dependencies
-    #   run: pnpm install
+    - name: Install dependencies
+      run: pnpm install
       
-    # - name: Build application
-    #   run: pnpm run build
+    - name: Build application
+      run: pnpm run build
 
-    # - name: Install Vercel CLI
-    #   run: npm i -g vercel
+    - name: Install Vercel CLI
+      run: npm i -g vercel
     
     - name: Show value in variable
       run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}"
-    - name: Show value in variable
-      run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKENs }}"
-      # run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}"
-    # - name: Deploy to Vercel
-    #   run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
+  
+    - name: Deploy to Vercel
+      run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
