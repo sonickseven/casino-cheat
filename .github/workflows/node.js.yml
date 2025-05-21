@@ -40,6 +40,4 @@ jobs:
       run: |
           vercel deploy --prod \
             --token ${{ secrets.VERCEL_TOKEN }} \
-            --orgId ${{ secrets.VERCEL_ORG_ID }} \
-            --projectId ${{ secrets.VERCEL_PROJECT_ID }} \
-            --yes
+            -y
