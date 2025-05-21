@@ -1,6 +1,6 @@
 # Summary
 
-This is a project created with **Next.js 15**. If you want to run it locally, execute the following commands:
+This is a project created with **Next.js 15** and **[github's actions](https://github.com/sonickseven/casino-cheat/actions)**. If you want to run it locally, execute the following commands:
 
 ### Installation
 
