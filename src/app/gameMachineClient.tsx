@@ -12,6 +12,7 @@ import { rerollChanceEnum } from "@/helpers/cheatsFunctions/types";
 import { isEnabledCheat, reviewToCheat } from "@/helpers/cheatsFunctions/reviewCredits";
 import { secuenceGetFruits } from "@/helpers/cheatsFunctions/secuenceGetFruits";
 import ButtonCashOut from "@/components/especial/buttonCashOut";
+import { sendGameTrack } from "@/app/requests";
 
 export default function GameMachineClient() {
     const { stateRandomFruits: [randomFruits, setRandomFruits], stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
@@ -47,6 +48,7 @@ export default function GameMachineClient() {
             setUser(old => ({ ...old, isPlaying: false }))
             return
         }
+        await sendGameTrack(user)
         setOptPage(old => ({ ...old, isLoading: true }))
         setRandomFruits(initialrandomFruits)
 
