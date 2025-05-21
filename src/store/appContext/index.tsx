@@ -12,6 +12,7 @@ export const initialrandomFruits = [emptyFruitEnum, emptyFruitEnum, emptyFruitEn
 
 // Create a provider component
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
+
     const stateRandomFruits = useState(initialrandomFruits);
     const stateUserAccount = useState(userAccountEnum);
 

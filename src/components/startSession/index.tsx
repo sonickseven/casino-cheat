@@ -3,8 +3,8 @@
 import { FormEvent, ReactElement, useEffect, useState } from "react"
 import { Container } from "@/components/commons/containers/index"
 import { useAppContext } from "@/store/appContext";
-import { initialStateTypes } from "@/store/appContext/types";
-import Button from "../commons/buttons/button";
+import { initialStateTypes, userAccountEnum } from "@/store/appContext/types";
+import Button from "@/components/commons/buttons/button";
 
 export default function StartSession(): ReactElement {
 
@@ -19,15 +19,14 @@ export default function StartSession(): ReactElement {
 
         setUser({
             name: userLocal,
-            score: 10,
+            score: userAccountEnum.score,
             isPlaying: true
         })
-
 
         try {
             if (typeof window !== 'undefined') {
                 window.localStorage.setItem('userName', userLocal)
-                window.localStorage.setItem('score', '10')
+                window.localStorage.setItem('score', String(userAccountEnum.score))
             }
         } catch (error) {
             console.error('Error accessing localStorage:', error);

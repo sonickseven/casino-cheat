@@ -1,0 +1,1 @@
+export const rerollChanceEnum = { value: 0, again: false }

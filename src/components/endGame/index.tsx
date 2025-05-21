@@ -11,11 +11,12 @@ export default function GameOver(): ReactElement {
     const { stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
 
     function playAgain() {
-        setUser(old => ({ ...old, isPlaying: true, score: 10 }))
+        const credits= 10
+        setUser(old => ({ ...old, isPlaying: true, score: credits }))
         try {
             if (typeof window !== 'undefined') {
                 window.localStorage.setItem('userName', user.name)
-                window.localStorage.setItem('score', '10')
+                window.localStorage.setItem('score', String(credits))
             }
         } catch {
             console.error('Error accessing localStorage:');

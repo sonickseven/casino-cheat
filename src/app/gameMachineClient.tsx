@@ -1,8 +1,5 @@
 'use client'
 
-import { fruits } from "@/store/lists/fruits";
-import { getRandomNumber } from '@/helpers/randomNumber/index'
-
 import { initialrandomFruits, useAppContext } from "@/store/appContext/index";
 
 import Button from "@/components/commons/buttons/button";
@@ -12,59 +9,56 @@ import { initialStateTypes, userAccountEnum } from "@/store/appContext/types";
 import FruitSlot from "@/components/especial/FruitSlot";
 import Link from "next/link";
 import { initialOptPageEnum } from "@/store/lists/optPage";
+import { rerollChanceEnum } from "@/helpers/cheatsFunctions/types";
+import { reviewToCheat, triggerRerollChance } from "@/helpers/cheatsFunctions/reviewCredits";
+import { secuenceGetFruits } from "@/helpers/cheatsFunctions/secuenceGetFruits";
 
-export function secuenceGetFruits(setRandomFruits: initialStateTypes['stateRandomFruits'][1]): Promise<void> {
-    const timeResult = 500
-    return new Promise(resol => {
-        setTimeout(() => {
-            let box = getRandomNumber(0, fruits.length - 1);
-            setRandomFruits(old => [fruits[box], old[1], old[2]])
-            setTimeout(() => {
-                box = getRandomNumber(0, fruits.length - 1);
-                setRandomFruits(old => [old[0], fruits[box], old[2]])
-                setTimeout(() => {
-                    box = getRandomNumber(0, fruits.length - 1);
-                    setRandomFruits(old => [old[0], old[1], fruits[box],])
-                    resol()
-                }, timeResult)
-            }, timeResult)
-        }, timeResult)
-    })
-}
-
-export default function GameMachineClient () {
+export default function GameMachineClient() {
     const { stateRandomFruits: [randomFruits, setRandomFruits], stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
 
     const [optPage, setOptPage] = useState(initialOptPageEnum)
+    const [rerollChance, setRerollChance] = useState(rerollChanceEnum);
 
     function leaveGame() {
         setUser(userAccountEnum)
         localStorage.clear()
     }
- 
-    useEffect(() => {
 
+    useEffect(() => {
         if (!randomFruits[0].character) return
+
         if (randomFruits[0].character === randomFruits[1].character && randomFruits[1].character === randomFruits[2].character) {
-            setUser(old => ({...old, score: old.score + randomFruits[0].score}))
+
+            const againRoll = triggerRerollChance(rerollChance)
+
+            if (!againRoll) {
+                setRerollChance(old => ({ ...old, again: false }))
+                setUser(old => ({ ...old, score: old.score + randomFruits[0].score }))
+                return
+            }
+            setRerollChance(old => ({ ...old, again: true }))
+            runGame(true).catch(console.error)
         }
     }, [randomFruits])
 
 
-    function runGame() {
-        if(user.score===0){
-            setUser(old=>({...old, isPlaying: false}))
+    async function runGame(automatic = false) {
+        if (user.score === 0) {
+            setUser(old => ({ ...old, isPlaying: false }))
             return
         }
         setOptPage(old => ({ ...old, isLoading: true }))
         setRandomFruits(initialrandomFruits)
-        setUser(old => ({...old, score: old.score - 1}));
-        setTimeout(async () => {
 
-            await secuenceGetFruits(setRandomFruits)
-            setOptPage(old => ({ ...old, isLoading: false }))
+        if (automatic) {
+            setUser(old => ({ ...old, score: old.score - 1 }));
+        }
 
-        }, 200)
+
+        await secuenceGetFruits(setRandomFruits)
+        reviewToCheat(user.score, setRerollChance)
+        setOptPage(old => ({ ...old, isLoading: false }))
+
     }
     return <Container className="flex flex-col gap-8 w-[95%] mx-auto">
         <Container className="flex flex-col gap-4">
@@ -93,8 +87,8 @@ export default function GameMachineClient () {
         </Container>
         <Button success disabled={optPage.isLoading ? true : false} onClick={runGame} text={optPage.isLoading ? 'Playing...' : "Play"} />
         <Button primary onClick={leaveGame} text="Leave" />
-        {user.score>10?
-        <Link href="/cash-out"><Button text="Cash out"/></Link>
-        :null}
+        {user.score > 10 ?
+            <Link href="/cash-out"><Button text="Cash out" /></Link>
+            : null}
     </Container>
 }
