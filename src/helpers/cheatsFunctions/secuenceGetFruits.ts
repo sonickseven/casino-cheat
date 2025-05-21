@@ -8,7 +8,7 @@ import { fruits } from "@/store/lists/fruits";
 export function secuenceGetFruits(
     setRandomFruits: initialStateTypes['stateRandomFruits'][1],
 ): Promise<void> {
-    const timeResult = 500
+    const timeResult = 1000
     return new Promise(resol => {
         setTimeout(() => {
             let box = getRandomNumber(0, fruits.length - 1);

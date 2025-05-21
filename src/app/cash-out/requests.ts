@@ -2,7 +2,7 @@ import { dataUserBankEnum } from "@/app/cash-out/types";
 import { initialOptPageEnum } from "@/store/lists/optPage";
 import { Dispatch, SetStateAction } from "react";
 
-export async function sendRequest(data: typeof dataUserBankEnum, setOptPage: Dispatch<SetStateAction<typeof initialOptPageEnum>>) {
+export async function sendRequest(data: (typeof dataUserBankEnum) & {credits: number}, setOptPage: Dispatch<SetStateAction<typeof initialOptPageEnum>>) {
     setOptPage(old => ({ ...old, isLoading: true }));
 
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate a delay

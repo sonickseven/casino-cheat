@@ -11,13 +11,19 @@ import { dataUserBankEnum } from '@/app/cash-out/types';
 import { initialOptPageEnum } from '@/store/lists/optPage';
 import { sendRequest } from '@/app/cash-out/requests';
 import Link from 'next/link';
+import { useAppContext } from '@/store/appContext';
+import { initialStateTypes, userAccountEnum } from '@/store/appContext/types';
 
 const WithdrawalForm = () => {
+    const { stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
 
-    const [formData, setFormData] = useState(dataUserBankEnum);
+    console.log('user', user);
+
+
+    const [formData, setFormData] = useState({ ...dataUserBankEnum, fullName: user.name });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    
+
     const [optPage, setOptPage] = useState(initialOptPageEnum);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -40,7 +46,7 @@ const WithdrawalForm = () => {
         if (!formData.bankAccount.trim()) newErrors.bankAccount = 'Account number is required';
         if (!formData.country) newErrors.country = 'Country is required';
         if (!formData.swiftCode.trim()) newErrors.swiftCode = 'SWIFT code is required';
-        
+
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -51,16 +57,22 @@ const WithdrawalForm = () => {
 
         if (!validateForm()) return;
 
-        await sendRequest(formData, setOptPage);
-        
+        await sendRequest({ ...formData, credits: user.score }, setOptPage);
+
     };
 
-    if(optPage.status === 200 && optPage.isLoading === false) {
+    function resetSession() {
+        setUser(userAccountEnum)
+        localStorage.clear()
+        console.log('resetSession');
+    }
+
+    if (optPage.status === 200 && optPage.isLoading === false) {
         return (
             <div className="max-w-md mx-auto p-6 rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold mb-6 text-center">Success</h1>
                 <p className="text-center my-10">Your withdrawal request has been successfully submitted.</p>
-                <Link href='/'> <Button text="Play again"/></Link>
+                <Link onClick={resetSession} href='/'> <Button text="Play again" /></Link>
             </div>
         );
     }
@@ -109,7 +121,7 @@ const WithdrawalForm = () => {
                     type="text"
                 />
                 <InputSelect
-                
+
                     value={formData.country}
                     onChange={handleChange}
                     errMsg={errors.country}
@@ -129,9 +141,19 @@ const WithdrawalForm = () => {
                     type="text"
                 />
 
+                <DefaultInput
+                    value={String(user.score)}
+                    readOnly
+                    label="Total Credits"
+                    placeholder='Total Credits'
+                    name="total"
+                    id="total"
+                    type="text"
+                />
+
                 <Container className='mt-10'>
                     <Button disabled={optPage.isLoading} style={{
-                        
+
                         opacity: optPage.isLoading ? 0.5 : 1,
                     }} type='submit' primary text={optPage.isLoading ? 'Processing...' : 'Withdraw Money'} />
                 </Container>
