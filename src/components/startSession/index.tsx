@@ -56,7 +56,7 @@ export default function StartSession(): ReactElement {
 
     return <Container className="fixed top-[15px] left-[15px] right-[15px] bottom-[15px] bg-gray-950 flex flex-col items-center justify-center border-2 border-gray-900 rounded-md">
         <h2 className="mb-10 text-[1.5rem]">Start Session</h2>
-        <form onSubmit={saveUser}>
+        <form onSubmit={saveUser} className="w-[95%] max-w-[400px]">
             <div className="flex flex-col gap-4">
                 <label htmlFor="name">Name</label>
                 <input required value={userLocal} onChange={evt => setUserLocal(evt.target.value)} type="text" id="name" className="border-2 border-gray-300 rounded-md p-2" />

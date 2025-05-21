@@ -32,37 +32,10 @@ jobs:
 
     - name: Install Vercel CLI
       run: npm i -g vercel
-    - name: Deploy to Vercel
-      run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
     
-
-    # - name: Upload artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: build-artifacts
-    #     path: ./
-    #     retention-days: 1
-
-  # deploy:
-  #   name: Deploy to Vercel
-  #   needs: build
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #     - uses: actions/checkout@v4
-      
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: build-artifacts
-          
-  #     - name: Install Vercel CLI
-  #       run: npm i -g vercel
-      
-  #     - name: Deploy to Vercel
-  #       run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
-  #       env:
-  #         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    - name: Show value in variable
+      run: echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}"
+    # - name: Deploy to Vercel
+    #   run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
+    #   env:
+    #     VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

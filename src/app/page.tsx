@@ -7,7 +7,7 @@ export default function Home() {
   
   return (
     <div>
-      <Container className="max-w-[800px]">
+      <Container className="max-w-[800px] mx-auto">
         <h1 className="text-[2rem] text-center mb-[20px]">Casino game</h1>
         <StartSession/>
         <GameOver/>
