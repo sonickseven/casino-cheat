@@ -1,4 +1,4 @@
-import { fruits } from '@/store/fruits';
+import { fruits } from '@/store/lists/fruits';
 import React, { useState, useEffect, useCallback } from 'react';
 
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { fruits } from "@/store/fruits";
+import { fruits } from "@/store/lists/fruits";
 import { getRandomNumber } from '@/helpers/randomNumber/index'
 
 import { initialrandomFruits, useAppContext } from "@/store/appContext/index";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { initialStateTypes, userAccountEnum } from "@/store/appContext/types";
 import FruitSlot from "@/components/especial/FruitSlot";
 import Link from "next/link";
+import { initialOptPageEnum } from "@/store/lists/optPage";
 
 export function secuenceGetFruits(setRandomFruits: initialStateTypes['stateRandomFruits'][1]): Promise<void> {
     const timeResult = 500
@@ -33,13 +34,8 @@ export function secuenceGetFruits(setRandomFruits: initialStateTypes['stateRando
 
 export default function GameMachineClient () {
     const { stateRandomFruits: [randomFruits, setRandomFruits], stateUserAccount: [user, setUser] } = useAppContext() as initialStateTypes;
-    const initialOptPage = {
-        isLoading: false,
-        status: 0,
-        msg: '',
-        err: false
-    }
-    const [optPage, setOptPage] = useState(initialOptPage)
+
+    const [optPage, setOptPage] = useState(initialOptPageEnum)
 
     function leaveGame() {
         setUser(userAccountEnum)
@@ -97,5 +93,8 @@ export default function GameMachineClient () {
         </Container>
         <Button success disabled={optPage.isLoading ? true : false} onClick={runGame} text={optPage.isLoading ? 'Playing...' : "Play"} />
         <Button primary onClick={leaveGame} text="Leave" />
+        {user.score>10?
+        <Link href="/cash-out"><Button text="Cash out"/></Link>
+        :null}
     </Container>
 }

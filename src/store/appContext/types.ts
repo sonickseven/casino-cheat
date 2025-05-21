@@ -1,4 +1,4 @@
-import { fruits } from "@/store/fruits/index";
+import { fruits } from "@/store/lists/fruits";
 import { Dispatch, SetStateAction } from "react";
 
 export const emptyFruitEnum: typeof fruits[0] = {
