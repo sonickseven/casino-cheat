@@ -8,6 +8,7 @@ export type DefaultInputTypes = {
     name?: string;
     id?: string;
     readOnly?: boolean;
+    required?: boolean;
 }
 
 export type InputSelectTypes = {

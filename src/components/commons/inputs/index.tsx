@@ -3,12 +3,13 @@ import { DefaultInputTypes } from "@/components/commons/inputs/types";
 
 export function DefaultInput(props: DefaultInputTypes) {
     return <div>
-    <label htmlFor={props.id} className="block text-sm font-medium text-gray-700">{props.label}</label>
+    <label htmlFor={props.id} className="block text-[1rem] font-medium text-gray-700">{props.label}</label>
     <input
       type={props.type || 'text'}
       id={props.id}
       name={props.name}
       placeholder={props.placeholder}
+      required={props.required}
       value={props.value}
       onChange={props.onChange}
       readOnly={props.readOnly}

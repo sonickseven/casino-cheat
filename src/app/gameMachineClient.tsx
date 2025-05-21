@@ -41,6 +41,7 @@ export default function GameMachineClient() {
             if (!againRoll) {
                 setRerollChance(old => ({ ...old, again: false }))
                 setUser(old => ({ ...old, score: old.score + randomFruits[0].score }))
+                audioApi?.play('/sounds/win.mp3')
                 return
             }
             setRerollChance(old => ({ ...old, again: true }))
@@ -63,7 +64,7 @@ export default function GameMachineClient() {
         }
         
         
-        audioApi?.play()
+        audioApi?.play('/sounds/slot-machine.mp3')
         await secuenceGetFruits(setRandomFruits)
         reviewToCheat(user.score, setRerollChance)
         setOptPage(old => ({ ...old, isLoading: false }))
