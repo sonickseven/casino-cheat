@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -29,6 +29,15 @@ jobs:
       
     - name: Build application
       run: pnpm run build
+
+    - name: Install Vercel CLI
+      run: npm i -g vercel
+    - name: Deploy to Vercel
+      run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} -y
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    
 
     # - name: Upload artifacts
     #   uses: actions/upload-artifact@v3
